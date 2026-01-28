@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ```
 
 ## Настройка окружения
-Создайте `.env` по примеру `.env.example`:
+Создайте `.env` по примеру `.env.example` (файл подхватывается автоматически):
 ```bash
 TOKEN=your_bot_token
 DB_PATH=data/app.db

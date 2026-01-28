@@ -3,6 +3,8 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 from app.domain.models import CartItem, Order, Product
 from app.storage.db import get_connection
 
@@ -10,6 +12,7 @@ from app.storage.db import get_connection
 class Repo:
     def __init__(self, db_path: Path | None = None) -> None:
         if db_path is None:
+            load_dotenv()
             db_path = Path(os.getenv("DB_PATH", "data/app.db"))
         self.db_path = db_path
 

@@ -15,8 +15,8 @@ class CheckoutState(StatesGroup):
     waiting_address = State()
 
 
-async def start_checkout(message: Message, state: FSMContext) -> None:
-    items = repo.get_cart_items(message.from_user.id)
+async def start_checkout(message: Message, state: FSMContext, user_id: int) -> None:
+    items = repo.get_cart_items(user_id)
     if not items:
         await message.answer("Корзина пуста.")
         return
@@ -29,7 +29,7 @@ async def start_checkout(message: Message, state: FSMContext) -> None:
 
 @router.message(lambda msg: msg.text and msg.text.lower() == "оформить")
 async def checkout_from_menu(message: Message, state: FSMContext) -> None:
-    await start_checkout(message, state)
+    await start_checkout(message, state, message.from_user.id)
 
 
 @router.callback_query(lambda call: call.data == "chk")
@@ -39,7 +39,7 @@ async def checkout_from_cart(call: CallbackQuery, state: FSMContext) -> None:
         await call.answer()
         return
     await call.answer()
-    await start_checkout(message, state)
+    await start_checkout(message, state, call.from_user.id)
 
 
 @router.message(CheckoutState.waiting_phone)
